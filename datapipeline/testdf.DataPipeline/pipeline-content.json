@@ -1,0 +1,325 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "Copy",
+        "typeProperties": {
+          "source": {
+            "type": "DataWarehouseSource",
+            "partitionOption": "None",
+            "queryTimeout": "02:00:00",
+            "datasetSettings": {
+              "type": "DataWarehouseTable",
+              "typeProperties": {
+                "schema": "dbo",
+                "table": "taxi_yellow_Silver"
+              },
+              "schema": [],
+              "linkedService": {
+                "name": "ProjectWarehouse",
+                "properties": {
+                  "type": "DataWarehouse",
+                  "typeProperties": {
+                    "artifactId": "6208c289-ff55-4d73-ae28-315c36a6da5d",
+                    "endpoint": "ue5buted5rpufnvbqhaotev3ky-t36p5erur4nutewyp5uzbz255y.datawarehouse.fabric.microsoft.com",
+                    "workspaceId": "92fefc9e-8f34-491b-92d8-7f6990e75dee"
+                  },
+                  "annotations": []
+                }
+              },
+              "annotations": []
+            }
+          },
+          "sink": {
+            "type": "DelimitedTextSink",
+            "formatSettings": {
+              "type": "DelimitedTextWriteSettings",
+              "fileExtension": ".txt"
+            },
+            "storeSettings": {
+              "type": "LakehouseWriteSettings"
+            },
+            "datasetSettings": {
+              "type": "DelimitedText",
+              "typeProperties": {
+                "location": {
+                  "type": "LakehouseLocation",
+                  "folderPath": "nyctaxi_lookup1/test/",
+                  "fileName": "2"
+                },
+                "columnDelimiter": ",",
+                "quoteChar": "\"",
+                "escapeChar": "\\",
+                "firstRowAsHeader": true
+              },
+              "schema": [],
+              "linkedService": {
+                "name": "onelakesample",
+                "properties": {
+                  "type": "Lakehouse",
+                  "typeProperties": {
+                    "artifactId": "7355a994-7bbb-bdaf-4c80-0526ae484f06",
+                    "workspaceId": "00000000-0000-0000-0000-000000000000",
+                    "rootFolder": "Files"
+                  },
+                  "annotations": []
+                }
+              },
+              "annotations": []
+            }
+          },
+          "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+              {
+                "source": {
+                  "name": "VendorID",
+                  "type": "Int32",
+                  "physicalType": "int"
+                },
+                "sink": {
+                  "name": "Vendorname",
+                  "physicalType": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "tpep_pickup_datetime",
+                  "type": "DateTime",
+                  "physicalType": "datetime2",
+                  "precision": 6
+                },
+                "sink": {
+                  "name": "tpep_pickup_datetime",
+                  "type": "String",
+                  "physicalType": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "tpep_dropoff_datetime",
+                  "type": "DateTime",
+                  "physicalType": "datetime2",
+                  "precision": 6
+                },
+                "sink": {
+                  "name": "tpep_dropoff_datetime",
+                  "type": "String",
+                  "physicalType": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "passenger_count",
+                  "type": "Int64",
+                  "physicalType": "bigint"
+                },
+                "sink": {
+                  "name": "passenger_count",
+                  "type": "String",
+                  "physicalType": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "trip_distance",
+                  "type": "Double",
+                  "physicalType": "float"
+                },
+                "sink": {
+                  "name": "trip_distance",
+                  "type": "String",
+                  "physicalType": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "RatecodeID",
+                  "type": "Int64",
+                  "physicalType": "bigint"
+                },
+                "sink": {
+                  "name": "RatecodeID",
+                  "type": "String",
+                  "physicalType": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "store_and_fwd_flag",
+                  "type": "String",
+                  "physicalType": "varchar",
+                  "length": "8000"
+                },
+                "sink": {
+                  "name": "store_and_fwd_flag",
+                  "type": "String",
+                  "physicalType": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "PULocationID",
+                  "type": "Int32",
+                  "physicalType": "int"
+                },
+                "sink": {
+                  "name": "PULocationID",
+                  "type": "String",
+                  "physicalType": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "DOLocationID",
+                  "type": "Int32",
+                  "physicalType": "int"
+                },
+                "sink": {
+                  "name": "DOLocationID",
+                  "type": "String",
+                  "physicalType": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "payment_type",
+                  "type": "Int64",
+                  "physicalType": "bigint"
+                },
+                "sink": {
+                  "name": "payment_type",
+                  "type": "String",
+                  "physicalType": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "fare_amount",
+                  "type": "Double",
+                  "physicalType": "float"
+                },
+                "sink": {
+                  "name": "fare_amount",
+                  "type": "String",
+                  "physicalType": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "extra",
+                  "type": "Double",
+                  "physicalType": "float"
+                },
+                "sink": {
+                  "name": "extra",
+                  "type": "String",
+                  "physicalType": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "mta_tax",
+                  "type": "Double",
+                  "physicalType": "float"
+                },
+                "sink": {
+                  "name": "mta_tax",
+                  "type": "String",
+                  "physicalType": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "tip_amount",
+                  "type": "Double",
+                  "physicalType": "float"
+                },
+                "sink": {
+                  "name": "tip_amount",
+                  "type": "String",
+                  "physicalType": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "tolls_amount",
+                  "type": "Double",
+                  "physicalType": "float"
+                },
+                "sink": {
+                  "name": "tolls_amount",
+                  "type": "String",
+                  "physicalType": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "improvement_surcharge",
+                  "type": "Double",
+                  "physicalType": "float"
+                },
+                "sink": {
+                  "name": "improvement_surcharge",
+                  "type": "String",
+                  "physicalType": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "total_amount",
+                  "type": "Double",
+                  "physicalType": "float"
+                },
+                "sink": {
+                  "name": "total_amount",
+                  "type": "String",
+                  "physicalType": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "congestion_surcharge",
+                  "type": "Double",
+                  "physicalType": "float"
+                },
+                "sink": {
+                  "name": "congestion_surcharge",
+                  "type": "String",
+                  "physicalType": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "Airport_fee",
+                  "type": "Double",
+                  "physicalType": "float"
+                },
+                "sink": {
+                  "name": "Airport_fee",
+                  "type": "String",
+                  "physicalType": "String"
+                }
+              }
+            ],
+            "typeConversion": true,
+            "typeConversionSettings": {
+              "allowDataTruncation": true,
+              "treatBooleanAsNumber": false
+            }
+          },
+          "enableStaging": false
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Copy data1",
+        "dependsOn": []
+      }
+    ]
+  }
+}
