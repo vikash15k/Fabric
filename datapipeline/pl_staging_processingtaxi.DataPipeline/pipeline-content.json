@@ -185,6 +185,19 @@
             "type": "Expression"
           }
         }
+      },
+      {
+        "name": "checkpr",
+        "type": "SetVariable",
+        "dependsOn": [],
+        "policy": {
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "variableName": "v_pr",
+          "value": "true"
+        }
       }
     ],
     "variables": {
@@ -193,6 +206,9 @@
         "defaultValue": "2024-01"
       },
       "v_end_date": {
+        "type": "String"
+      },
+      "v_pr": {
         "type": "String"
       }
     }
