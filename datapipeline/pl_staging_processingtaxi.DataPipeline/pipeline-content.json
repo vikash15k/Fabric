@@ -198,6 +198,19 @@
           "variableName": "v_pr",
           "value": "true"
         }
+      },
+      {
+        "name": "testing",
+        "type": "SetVariable",
+        "dependsOn": [],
+        "policy": {
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "variableName": "v_date",
+          "value": "asdasd"
+        }
       }
     ],
     "variables": {
