@@ -1,0 +1,200 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "name": "Copy to staging",
+        "type": "Copy",
+        "state": "Inactive",
+        "onInactiveMarkAs": "Succeeded",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "source": {
+            "type": "ParquetSource",
+            "storeSettings": {
+              "type": "LakehouseReadSettings",
+              "recursive": true,
+              "enablePartitionDiscovery": false
+            },
+            "formatSettings": {
+              "type": "ParquetReadSettings"
+            },
+            "datasetSettings": {
+              "annotations": [],
+              "linkedService": {
+                "name": "onelakesample",
+                "properties": {
+                  "annotations": [],
+                  "type": "Lakehouse",
+                  "typeProperties": {
+                    "workspaceId": "92fefc9e-8f34-491b-92d8-7f6990e75dee",
+                    "artifactId": "ae484f06-0526-4c80-bdaf-7bbb7355a994",
+                    "rootFolder": "Files"
+                  }
+                }
+              },
+              "type": "Parquet",
+              "typeProperties": {
+                "location": {
+                  "type": "LakehouseLocation",
+                  "fileName": {
+                    "value": "@concat('yellow_tripdata_',variables('v_date'),'.parquet')",
+                    "type": "Expression"
+                  },
+                  "folderPath": "nyctaxi_yellow"
+                },
+                "compressionCodec": "snappy"
+              },
+              "schema": []
+            }
+          },
+          "sink": {
+            "type": "DataWarehouseSink",
+            "preCopyScript": "delete from stg.taxi_yellow",
+            "allowCopyCommand": true,
+            "copyCommandSettings": {},
+            "disableMetricsCollection": false,
+            "datasetSettings": {
+              "annotations": [],
+              "linkedService": {
+                "name": "ProjectWarehouse",
+                "properties": {
+                  "annotations": [],
+                  "type": "DataWarehouse",
+                  "typeProperties": {
+                    "endpoint": "ue5buted5rpufnvbqhaotev3ky-t36p5erur4nutewyp5uzbz255y.datawarehouse.fabric.microsoft.com",
+                    "artifactId": "6208c289-ff55-4d73-ae28-315c36a6da5d",
+                    "workspaceId": "92fefc9e-8f34-491b-92d8-7f6990e75dee"
+                  }
+                }
+              },
+              "type": "DataWarehouseTable",
+              "schema": [],
+              "typeProperties": {
+                "schema": "stg",
+                "table": "taxi_yellow"
+              }
+            }
+          },
+          "enableStaging": true,
+          "translator": {
+            "type": "TabularTranslator",
+            "typeConversion": true,
+            "typeConversionSettings": {
+              "allowDataTruncation": true,
+              "treatBooleanAsNumber": false
+            }
+          }
+        }
+      },
+      {
+        "name": "set end date",
+        "type": "SetVariable",
+        "state": "Inactive",
+        "onInactiveMarkAs": "Succeeded",
+        "dependsOn": [
+          {
+            "activity": "Copy to staging",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "variableName": "v_end_date",
+          "value": {
+            "value": "@addToTime(concat(variables('v_date'),'-01'),1 , 'Month') ",
+            "type": "Expression"
+          }
+        }
+      },
+      {
+        "name": "sp cleaning staging data",
+        "type": "SqlServerStoredProcedure",
+        "state": "Inactive",
+        "onInactiveMarkAs": "Succeeded",
+        "dependsOn": [
+          {
+            "activity": "set end date",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "storedProcedureName": "[stg].[data_cleaning_staging]",
+          "storedProcedureParameters": {
+            "end_date": {
+              "value": {
+                "value": "@variables('v_end_date')",
+                "type": "Expression"
+              },
+              "type": "Datetime"
+            },
+            "start_date": {
+              "value": {
+                "value": "@concat(variables('v_date'),'-01')",
+                "type": "Expression"
+              },
+              "type": "Datetime"
+            }
+          }
+        },
+        "linkedService": {
+          "name": "ProjectWarehouse",
+          "properties": {
+            "annotations": [],
+            "type": "DataWarehouse",
+            "typeProperties": {
+              "endpoint": "ue5buted5rpufnvbqhaotev3ky-t36p5erur4nutewyp5uzbz255y.datawarehouse.fabric.microsoft.com",
+              "artifactId": "6208c289-ff55-4d73-ae28-315c36a6da5d",
+              "workspaceId": "92fefc9e-8f34-491b-92d8-7f6990e75dee"
+            }
+          }
+        }
+      },
+      {
+        "name": "set start date",
+        "type": "SetVariable",
+        "dependsOn": [],
+        "policy": {
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "variableName": "v_date",
+          "value": {
+            "value": "@if(empty(variables('v_end_date')),'2024-01',variables('v_end_date'))",
+            "type": "Expression"
+          }
+        }
+      }
+    ],
+    "variables": {
+      "v_date": {
+        "type": "String",
+        "defaultValue": "2024-01"
+      },
+      "v_end_date": {
+        "type": "String"
+      }
+    }
+  }
+}

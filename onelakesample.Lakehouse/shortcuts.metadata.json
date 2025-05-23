@@ -1,0 +1,28 @@
+[
+  {
+    "name": "taxi_yellow",
+    "path": "/Tables",
+    "target": {
+      "type": "OneLake",
+      "oneLake": {
+        "path": "Tables/stg/taxi_yellow",
+        "itemId": "36a6da5d-315c-ae28-4d73-ff556208c289",
+        "workspaceId": "00000000-0000-0000-0000-000000000000",
+        "artifactType": "Warehouse"
+      }
+    }
+  },
+  {
+    "name": "Orders",
+    "path": "/Tables",
+    "target": {
+      "type": "OneLake",
+      "oneLake": {
+        "path": "Tables/sales/Orders",
+        "itemId": "36a6da5d-315c-ae28-4d73-ff556208c289",
+        "workspaceId": "00000000-0000-0000-0000-000000000000",
+        "artifactType": "Warehouse"
+      }
+    }
+  }
+]

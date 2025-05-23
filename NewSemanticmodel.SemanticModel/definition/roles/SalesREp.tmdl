@@ -1,0 +1,7 @@
+role SalesREp
+	modelPermission: read
+
+	tablePermission Orders = [SalesRep] == "Sales2@contoso.com" && [ProductName] <> "Laptop"
+
+	annotation PBI_Id = dfed08eaaa324fbaa8d0d5f7c2ec7c83
+
