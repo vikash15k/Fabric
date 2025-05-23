@@ -1,0 +1,86 @@
+table Orders
+	isHidden
+	lineageTag: b44517a5-2360-41c5-9b45-e47695493406
+	sourceLineageTag: [sales].[Orders]
+
+	column SaleID
+		dataType: int64
+		isHidden
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 1150c00d-3bd9-4110-973c-199ae615e3fd
+		sourceLineageTag: SaleID
+		summarizeBy: count
+		sourceColumn: SaleID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesRep
+		dataType: string
+		isHidden
+		sourceProviderType: varchar(100)
+		lineageTag: cee7f689-dbde-4078-b001-a8805c840ad1
+		sourceLineageTag: SalesRep
+		summarizeBy: none
+		sourceColumn: SalesRep
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductName
+		dataType: string
+		isHidden
+		sourceProviderType: varchar(50)
+		lineageTag: 48d7a489-2575-4cd2-ac5a-0717c2dc868e
+		sourceLineageTag: ProductName
+		summarizeBy: none
+		sourceColumn: ProductName
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column SaleAmount
+		dataType: decimal
+		isHidden
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		sourceProviderType: decimal(10, 2)
+		lineageTag: c3706dfc-d2c0-4821-97c0-d5b1f95dba3d
+		sourceLineageTag: SaleAmount
+		summarizeBy: sum
+		sourceColumn: SaleAmount
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column SaleDate
+		dataType: dateTime
+		isHidden
+		formatString: General Date
+		sourceProviderType: date
+		lineageTag: a151cc37-b1e4-47a7-9057-a2c8f80d9938
+		sourceLineageTag: SaleDate
+		summarizeBy: none
+		sourceColumn: SaleDate
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Orders = entity
+		mode: directLake
+		source
+			entityName: Orders
+			schemaName: sales
+			expressionSource: DatabaseQuery
+
+	changedProperty = IsHidden
+
+	annotation PBI_ResultType = Table
+
